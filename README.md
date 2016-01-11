@@ -2,8 +2,10 @@
 A simple treeview for bootstrap
 
 ### feature
-+ Light Weight
-+ Lazy load
++ Lightweight && Easy to learn
++ Lazyload
+
+
 ## Usage
 Include following static file:
 - `vtree.js`
@@ -11,6 +13,7 @@ Include following static file:
 
 ```html
 <div class="tree-box"></div>
+```
 
 ```js
 
