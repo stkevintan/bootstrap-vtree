@@ -1,0 +1,67 @@
+.vtree
+    margin-left:-20px
+    .tree-group
+        margin:0
+    .tree-group-item
+        padding-left:25px
+        line-height:50px
+        position:relative
+        .item-content
+            color:#666
+            padding-right:10px
+            white-space:nowrap
+            &:hover
+                //background-color:#f5f5f5
+                color:#333
+                button
+                    display:block;
+        &:before
+            content: ''
+            position: absolute
+            left: 5px
+            top: -25px
+            width: 20px
+            height: 100%
+            border-color: #666
+            border-style: dashed
+            border-width: 0 0 0 1px
+        &:after
+            content:''
+            position:absolute
+            left:5px
+            top:25px
+            width:20px
+            height:1px
+            border-bottom:1px dashed #666
+        &:last-child:before
+            height:50px
+        button
+            line-height:30px
+            padding-top:0
+            padding-bottom:0
+            margin-top:10px
+            position: absolute;
+            right: 10px;
+            display:none
+
+    & > .tree-group > .tree-group-item
+        &:before,&:after
+            display:none
+
+
+    .tree-group-item  > .tree-group,
+    .tree-group-item > .item-content > .collapse-icon,
+    .tree-group-item.expanded > .item-content > .expand-icon
+        display:none
+
+    .tree-group-item.expanded > .tree-group
+        display:block
+
+    .tree-group-item.expanded > .item-content > .collapse-icon,
+    .tree-group-item > .item-content > .expand-icon
+        display:inline-block
+
+    .collapse-icon,.expand-icon
+        cursor:pointer
+    .glyphicon, img
+        margin-right:8px

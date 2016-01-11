@@ -1,0 +1,8 @@
+extends ./_base.jade
+block content
+    #body.container: .row
+        #sidebar.col-md-4.col-sm-5
+            include ./partial/sidebar.jade
+        #main.col-md-8.col-sm-7
+            block main
+    

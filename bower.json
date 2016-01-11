@@ -1,0 +1,23 @@
+{
+  "name": "bootstrap-vtree",
+  "description": "",
+  "main": "index.html",
+  "authors": [
+    "Kevin"
+  ],
+  "license": "MIT",
+  "moduleType": [],
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.6",
+    "html5shiv": "~3.7.3",
+    "jquery-mockjax": "~2.0.1"
+  }
+}
