@@ -107,6 +107,10 @@
     }
     function expandNode($li, cb) {
         $li.addClass('expanded');
+        if (userOpts.lazyLoad == false) {
+            cb();
+            return;
+        }
         let $subul = $li.children('ul');
         if ($subul.length === 0 || $subul.children('li').length === 0) {
             if (typeof cb === 'function') {

@@ -1,3 +1,18 @@
+const sample = [{
+    text: `item-1`,
+    nodes: [{
+        text: `item-2`,
+        type: 'section',
+        nodes: [{
+            text: 'item-4'
+        }]
+    },
+        {
+            text: `item-3`,
+            type: 'staff',
+            isLeaf: true
+        }]
+}]
 const Tester = () => {
     var fakename = 0;
     $.mockjax({
@@ -9,8 +24,7 @@ const Tester = () => {
                 nodes: [
                     {
                         text: `item-${++fakename}`,
-                        type: 'section',
-
+                        type: 'section'
                     },
                     {
                         text: `item-${++fakename}`,
