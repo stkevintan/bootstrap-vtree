@@ -1,7 +1,9 @@
 # bootstrap-vtree
 A simple treeview for bootstrap
 
-## feature
+## Snapshot
+![snapshot](https://raw.githubusercontent.com/stkevintan/bootstrap-vtree/master/snapshot/sample.png)
+## Feature
 + Lightweight && Easy to learn
 + Lazyload
 
