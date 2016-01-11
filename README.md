@@ -1,7 +1,7 @@
 # bootstrap-vtree
 A simple treeview for bootstrap
 
-### feature
+## feature
 + Lightweight && Easy to learn
 + Lazyload
 
