@@ -40,7 +40,7 @@ const sample = [{
         }]
 }];
 
-const vtree = $(.tree-box).vtree(sample,{
+const vtree = $('.tree-box').vtree(sample,{
     loadingImg: 'assets/static/loading.gif',
     types:{
         section:{
