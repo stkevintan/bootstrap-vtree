@@ -9,51 +9,19 @@ A simple treeview for bootstrap
 
 
 ## Usage
-Include following static file:
+### Preparation
+Include following static file to your project:
 - `vtree.js`
 - `vtree.css`
 
+add a wrapper for vtree  
 ```html
 <div class="tree-box"></div>
 ```
 
+init bootstrap-vtree  
 ```js
-
-const sample = [{
-    id:'tr-1',
-    text: 'item-1',
-    nodes: [{
-        id:'tr-2',
-        text: 'item-2',
-        type: 'section',
-        nodes: [{
-            id:'tr-4',
-            text: 'item-4',
-            isLeaf:true
-        }]
-    },
-        {
-            id:'tr-3',
-            text: 'item-3',
-            type: 'staff',
-            isLeaf: true
-        }]
-}];
-
-const vtree = $('.tree-box').vtree(sample,{
-    loadingImg: 'assets/static/loading.gif',
-    types:{
-        section:{
-            icon: 'glyphicon glyphicon-home'
-        },
-        staff:{
-            icon: 'glyphicon glyphicon-home'
-        }
-    }
-});
-
-///lazyLoad
-const vtree_lazyload = $('.tree-box').vtree({
+const CONFIG = {
     lazyLoad: true,
     xhrConf: {
         type: 'GET',
@@ -65,14 +33,14 @@ const vtree_lazyload = $('.tree-box').vtree({
         section: {
             icon: 'glyphicon glyphicon-home',
             action: {
-                defaultName: '隐藏人员',
-                activeName: '显示人员',
+                defaultName: '显示人员',
+                activeName: '隐藏人员',
                 event: function($elem, state) {
                     let $collect = $elem.children('ul').children('li[data-type!="section"]');
                     if (state === this.defaultName) {
-                        $collect.hide();
-                    } else {
                         $collect.show();
+                    } else {
+                        $collect.hide();
                     }
                 }
             }
@@ -81,36 +49,38 @@ const vtree_lazyload = $('.tree-box').vtree({
             icon: 'glyphicon glyphicon-user'
         }
     }
-});
-    
-//methods
-const subTree = {
-    rootId:'tr-2',
-    nodes:[{
-        text:'item-5',
-        isLeaf:true
-    }]
 }
-const newXhrConf = {
-    type:'GET',
-    url:'/getTree2',
-    dataType:'json'
-}
-const $nodes = $('.vtree li[data-type=section]');
 
-//rebuild a subtree with new data
-vtree.build(subTree); 
-
-//reload the subtree of node 'tr-2' with new ajax settings
-vtree_lazyload.load('tr-2',newXhrConf,() => {
-  console.log('done');
-});
-
-//expand all nodes
-vtree.expandNode($nodes,() => {
-  console.log('done');
-});
-
-//collapse all nodes
-vtree.collapseNode($nodes);
+let vtree = $('.tree-box').vtree(Samples, CONFIG);
 ```
+
+### Methods
+```js
+function methodsExamples() {
+    //reload node(id=2) from server
+    vtree.load({
+        id: 2
+    }, function() {
+        console.log('done');
+    });
+
+    //search 'xxx' from server(parameter:keyword)
+    vtree.load({
+        keyword: 'xxx'
+    }, function() {
+        console.log('done');
+    });
+    //build a tree or subtree from a specific JSON data 
+    vtree.build(Samples);
+
+    //expand node(id=4)
+    vtree.expandNode(4, function() {
+        console.log('done');
+    });
+
+    //collapse node(id=2)
+    vtree.collapseNode(2);
+}
+```
+
+Enjoy!
