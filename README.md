@@ -3,9 +3,7 @@ A simple treeview for bootstrap
 
 ## Snapshot
 ![snapshot](https://raw.githubusercontent.com/stkevintan/bootstrap-vtree/master/snapshot/sample.png)
-## Feature
-+ Lightweight && Easy to learn
-+ Lazyload
+
 
 
 ## Usage
