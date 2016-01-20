@@ -2,6 +2,14 @@
     let tree = {};
     let idCounter = 0;
     let $elem = undefined;
+    /**
+    * Enum Switch States
+    * @enum {string}
+    **/
+    const SwitchAction = {
+        ON: 1,
+        OFF: 0
+    }
     let defaultOpts = {
         lazyLoad: false,
         types: {
@@ -51,10 +59,10 @@
                 <span class="${userOpts.types[node.type].icon} "></span>
                 <a href='${node.url ? node.url : 'javascript:void(0)'}'>${node.text}</a>
                 </div>`);
-            if (userOpts.types[node.type].hasOwnProperty('action')) {
+            if (userOpts.types[node.type].hasOwnProperty('btn')) {
                 let $btn = $(document.createElement('button'));
                 $btn.addClass('btn btn-default');
-                $btn.text(userOpts.types[node.type].action.defaultName);
+                $btn.text(userOpts.types[node.type].btn.defaultName);
                 $li.children('.item-content').prepend($btn);
             }
             $ul.append($li);
@@ -150,13 +158,19 @@
             let $li = $self.closest('li');
             expandNode($li, function() {
                 let type = $li.data('type');
-                userOpts.types[type].action.event($li, $self.text());
-                adjustLine($li.children('ul'));
-                if ($self.text() === userOpts.types[type].action.defaultName) {
-                    $self.text(userOpts.types[type].action.activeName);
-                } else {
-                    $self.text(userOpts.types[type].action.defaultName);
+                const ACTION = ($self.text() === userOpts.types[type].btn.defaultName ? SwitchAction.ON : SwitchAction.OFF);
+                userOpts.types[type].btn.handler.call(this, $li.data('id'), ACTION);
+                switch (ACTION) {
+                    case SwitchAction.ON:
+                        $self.text(userOpts.types[type].btn.activeName);
+                        $li.addClass('active');
+                        break;
+                    case SwitchAction.OFF:
+                        $self.text(userOpts.types[type].btn.defaultName);
+                        $li.removeClass('active');
+                        break;
                 }
+                adjustLine($li.children('ul'));
             });
         });
     }
@@ -182,7 +196,7 @@
             },
             collapseNode: function() {
                 const $li = $(`li[data-id=${id}]`, $elem);
-                collapseNode($li, cb);
+                collapseNode($li);
             }
         };
     }

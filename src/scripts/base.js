@@ -65,16 +65,16 @@ $(() => {
         types: {
             section: {
                 icon: 'glyphicon glyphicon-home',
-                action: {
+                btn: {
                     defaultName: '显示人员',
                     activeName: '隐藏人员',
-                    event: function($elem, state) {
-                        let $collect = $elem.children('ul').children('li[data-type!="section"]');
-                        if (state === this.defaultName) {
-                            $collect.show();
-                        } else {
-                            $collect.hide();
-                        }
+                    handler: function(id, action) {
+                        /**
+                        * callback function to excute after user clicked this button
+                        * @param {string} id - the identify of this node
+                        * @param {SwitchAction} [action=0|1] - the action name, 0:OFF or 1:ON
+                        **/
+                        console.log(id, action ? 'ON' : 'OFF');
                     }
                 }
             },
@@ -111,6 +111,6 @@ $(() => {
         //折叠id为2的节点
         vtree.collapseNode(2);
     }
-    vtree.build(Samples);
+
 }
 )

@@ -19,6 +19,37 @@ add a wrapper for vtree
 
 init bootstrap-vtree  
 ```js
+var Samples = {
+    rootId: 0, //默认0
+    nodes: [
+        {
+            text: `item-${++fakename}`,
+            type: 'section',
+            url: 'www.baidu.com',
+            isExpanded: true,
+            nodes: [
+                {
+                    url: 'http://www.baidu.com',
+                    text: `item-${++fakename}`,
+                    type: 'section'
+                },
+                {
+                    url: 'http://www.baidu.com',
+                    text: `item-${++fakename}`,
+                    type: 'staff',
+                    isLeaf: true
+                }
+            ]
+        },
+        {
+            url: 'http://www.baidu.com',
+            text: `item-${++fakename}`,
+            type: 'staff',
+            isLeaf: true
+        }
+    ]
+}
+
 const CONFIG = {
     lazyLoad: true,
     xhrConf: {
@@ -30,16 +61,16 @@ const CONFIG = {
     types: {
         section: {
             icon: 'glyphicon glyphicon-home',
-            action: {
-                defaultName: '显示人员',
-                activeName: '隐藏人员',
-                event: function($elem, state) {
-                    let $collect = $elem.children('ul').children('li[data-type!="section"]');
-                    if (state === this.defaultName) {
-                        $collect.show();
-                    } else {
-                        $collect.hide();
-                    }
+            btn: {
+                defaultName: 'showStaffs',
+                activeName: 'hideStaffs',
+                handler: function(id, action) {
+                    /**
+                    * callback function to excute after user clicked this button
+                    * @param {string} id - the identify of this node
+                    * @param {SwitchAction} [action=0|1] - the action name, 0:OFF or 1:ON
+                    **/
+                    console.log(id, action ? 'ON' : 'OFF');
                 }
             }
         },
@@ -68,7 +99,7 @@ function methodsExamples() {
     }, function() {
         console.log('done');
     });
-    //build a tree or subtree from a specific JSON data 
+    //build a tree or subtree from a specific JSON data
     vtree.build(Samples);
 
     //expand node(id=4)

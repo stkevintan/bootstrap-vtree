@@ -47,8 +47,6 @@
     & > .tree-group > .tree-group-item
         &:before,&:after
             display:none
-
-
     .tree-group-item  > .tree-group,
     .tree-group-item > .item-content > .collapse-icon,
     .tree-group-item.expanded > .item-content > .expand-icon
@@ -66,5 +64,9 @@
     .glyphicon, img
         margin-right:8px
 
-    li[data-type="staff"]
+    //user customization
+    .tree-group-item > .tree-group > li[data-type="staff"]
         display:none
+        
+    .tree-group-item.active > .tree-group > li[data-type="staff"]
+        display:list-item
