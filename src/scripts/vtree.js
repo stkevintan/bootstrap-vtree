@@ -40,6 +40,7 @@
             $li.addClass('tree-group-item');
             $li.attr('data-id', node.id);
             $li.attr('data-type', node.type);
+            if (node.isExpanded) $li.addClass('expanded');
             let ctrl = '';
             if (!node.isLeaf) {
                 ctrl = `<span class="${userOpts.expandIcon} expand-icon"></span>
@@ -48,12 +49,11 @@
             $li.html(`<div class='item-content'>
                 ${ctrl}
                 <span class="${userOpts.types[node.type].icon} "></span>
-                ${node.text}
+                <a href='${node.url ? node.url : 'javascript:void(0)'}'>${node.text}</a>
                 </div>`);
             if (userOpts.types[node.type].hasOwnProperty('action')) {
                 let $btn = $(document.createElement('button'));
                 $btn.addClass('btn btn-default');
-
                 $btn.text(userOpts.types[node.type].action.defaultName);
                 $li.children('.item-content').prepend($btn);
             }
@@ -63,7 +63,7 @@
         }
         $cur.append($ul[0]);
     }
-
+    // 根据data建树
     function build(data) {
         data.rootId = data.rootId || 0;
         let $root = $elem;
@@ -76,25 +76,29 @@
         }
         $root.children('ul').remove();
         render(data, $root);
+        adjustLine();
     }
     /**
-    * @param id {integer} - resource's id
-    * @param settings {object} - ajax settings object
+    * @param params {object} - ajax请求的参数
+    * @param cb {function} - callback function
     */
-    function load(id = 0, settings = userOpts.xhrConf, cb) {
+
+    function load(params = {}, cb) {
         let $img = $(document.createElement('img'));
         $img.attr('src', userOpts.loadingImg);
-        if (id === 0) {
+        if (!params.hasOwnProperty('id')) {
+            params.id = 0;
+        }
+        if (params.id === 0) {
             $elem.children('ul').fadeOut();
             userOpts.loadingImg && $elem.before($img);
         } else {
             userOpts.loadingImg &&
-            $elem.find(`li[data-id=${id}]  span.collapse-icon`).eq(0).after($img);
+            $elem.find(`li[data-id=${params.id}]  span.collapse-icon`).eq(0).after($img);
         }
-        $.ajax($.extend({}, settings, {
-            data: {
-                id
-            }
+
+        $.ajax($.extend({}, userOpts.xhrConf, {
+            data: params
         })).done((data) => {
             build(data);
         }).fail((XMLHttpRequest) => {
@@ -105,19 +109,25 @@
             cb && cb();
         });
     }
+    function adjustLine($ul = $elem.find('ul')) {
+        var $li = $ul.children('li:visible').last();
+        $li.addClass('last-child').siblings().removeClass('last-child');
+    }
     function expandNode($li, cb) {
+        if ($li.hasClass('expanded')) {
+            cb && cb();
+            return;
+        }
         $li.addClass('expanded');
-        if (userOpts.lazyLoad == false) {
-            cb();
+        if (userOpts.lazyLoad === false) {
+            cb && cb();
             return;
         }
         let $subul = $li.children('ul');
         if ($subul.length === 0 || $subul.children('li').length === 0) {
-            if (typeof cb === 'function') {
-                load($li.data('id'), userOpts.xhrConf, cb);
-            } else {
-                load($li.data('id'));
-            }
+            load({
+                id: $li.data('id')
+            }, cb);
         } else {
             cb && cb();
         }
@@ -138,20 +148,16 @@
         $elem.on('click', 'button', function() {
             let $self = $(this);
             let $li = $self.closest('li');
-            if (!$li.hasClass('expanded')) {
-                expandNode($li, doAction);
-            } else {
-                doAction();
-            }
-            function doAction() {
+            expandNode($li, function() {
                 let type = $li.data('type');
                 userOpts.types[type].action.event($li, $self.text());
+                adjustLine($li.children('ul'));
                 if ($self.text() === userOpts.types[type].action.defaultName) {
                     $self.text(userOpts.types[type].action.activeName);
                 } else {
                     $self.text(userOpts.types[type].action.defaultName);
                 }
-            }
+            });
         });
     }
 
@@ -162,17 +168,22 @@
             data = {};
         }
         init(this[0], opts);
-        if (userOpts.lazyLoad) {
+        build(data);
+        if (userOpts.lazyLoad && data == {}) {
             load();
-        } else {
-            build(data);
         }
         bind();
         return {
             load,
             build,
-            expandNode,
-            collapseNode
+            expandNode: function(id, cb) {
+                const $li = $(`li[data-id=${id}]`, $elem);
+                expandNode($li, cb);
+            },
+            collapseNode: function() {
+                const $li = $(`li[data-id=${id}]`, $elem);
+                collapseNode($li, cb);
+            }
         };
     }
 })(jQuery);
