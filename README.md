@@ -1,7 +1,9 @@
 # bootstrap-vtree
 A simple treeview for bootstrap
 
-## feature
+## Snapshot
+![snapshot](https://raw.githubusercontent.com/stkevintan/bootstrap-vtree/master/snapshot/sample.png)
+## Feature
 + Lightweight && Easy to learn
 + Lazyload
 
@@ -25,7 +27,7 @@ const sample = [{
         text: 'item-2',
         type: 'section',
         nodes: [{
-            id:'tr-4'
+            id:'tr-4',
             text: 'item-4',
             isLeaf:true
         }]
@@ -38,7 +40,7 @@ const sample = [{
         }]
 }];
 
-const vtree = $(.tree-box).vtree(sample,{
+const vtree = $('.tree-box').vtree(sample,{
     loadingImg: 'assets/static/loading.gif',
     types:{
         section:{
@@ -100,12 +102,12 @@ const $nodes = $('.vtree li[data-type=section]');
 vtree.build(subTree); 
 
 //reload the subtree of node 'tr-2' with new ajax settings
-vtree_lazyload.load('tr-2',newXhrConf,function(){
+vtree_lazyload.load('tr-2',newXhrConf,() => {
   console.log('done');
 });
 
 //expand all nodes
-vtree.expandNode($nodes,function(){
+vtree.expandNode($nodes,() => {
   console.log('done');
 });
 
