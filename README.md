@@ -19,7 +19,8 @@ add a wrapper for vtree
 
 init bootstrap-vtree  
 ```js
-var Samples = {
+const fakename = 0;
+const Samples = {
     rootId: 0, //默认0
     nodes: [
         {
@@ -64,7 +65,7 @@ const CONFIG = {
             btn: {
                 defaultName: 'showStaffs',
                 activeName: 'hideStaffs',
-                handler: function(id, action) {
+                handler(id, action) {
                     /**
                     * callback function to excute after user clicked this button
                     * @param {string} id - the identify of this node
@@ -89,26 +90,40 @@ function methodsExamples() {
     //reload node(id=2) from server
     vtree.load({
         id: 2
-    }, function() {
+    }, () => {
         console.log('done');
     });
 
     //search 'xxx' from server(parameter:keyword)
     vtree.load({
         keyword: 'xxx'
-    }, function() {
+    }, ()  => {
         console.log('done');
     });
     //build a tree or subtree from a specific JSON data
     vtree.build(Samples);
 
     //expand node(id=4)
-    vtree.expandNode(4, function() {
+    vtree.expandNode(4,() => {
         console.log('done');
     });
 
     //collapse node(id=2)
     vtree.collapseNode(2);
+}
+```
+### Events
+```js
+function EventsExamples() {
+    function handler(e, id, $elem) {
+        console.log('event :', e, 'id :', id, 'element :', $elem);
+    }
+    //bind events
+    vtree.on('expand', handler);
+    vtree.on('collapse', handler);
+
+    //remove event handler
+    vtree.off('expand', handler);
 }
 ```
 

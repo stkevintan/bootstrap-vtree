@@ -1,4 +1,4 @@
-var fakename = 0;
+let fakename = 0;
 
 const Tester = () => {
     $.mockjax({
@@ -22,7 +22,7 @@ const Tester = () => {
         }
     });
 }
-var Samples = {
+const Samples = {
     rootId: 0, //默认0
     nodes: [
         {
@@ -68,7 +68,7 @@ $(() => {
                 btn: {
                     defaultName: '显示人员',
                     activeName: '隐藏人员',
-                    handler: function(id, action) {
+                    handler(id, action) {
                         /**
                         * callback function to excute after user clicked this button
                         * @param {string} id - the identify of this node
@@ -90,21 +90,21 @@ $(() => {
         //重新加载id为2的节点
         vtree.load({
             id: 2
-        }, function() {
+        }, () => {
             console.log('done');
         });
 
         //搜索‘xxx’(服务器端实现)
         vtree.load({
             keyword: 'xxx'
-        }, function() {
+        }, () => {
             console.log('done');
         });
         //使用现成的JSON数据建树
         vtree.build(Samples);
 
         //展开id为4的节点
-        vtree.expandNode(4, function() {
+        vtree.expandNode(4, () => {
             console.log('done');
         });
 
