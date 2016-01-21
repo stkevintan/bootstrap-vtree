@@ -112,5 +112,17 @@ $(() => {
         vtree.collapseNode(2);
     }
 
+    function EventsExamples() {
+        function handler(e, id, $elem) {
+            console.log('event :', e, 'id :', id, 'element :', $elem);
+        }
+        //绑定展开事件
+        vtree.on('expand', handler);
+        //绑定折叠事件
+        vtree.on('collapse', handler);
+        //删除绑定时间
+        vtree.off('expand', handler);
+    }
+    EventsExamples();
 }
 )

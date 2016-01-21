@@ -4,11 +4,19 @@
     let $elem = undefined;
     /**
     * Enum Switch States
-    * @enum {string}
+    * @enum {number}
     **/
     const SwitchAction = {
         ON: 1,
         OFF: 0
+    }
+    /**
+    * Enum Events
+    * @enum {string}
+    **/
+    const Events = {
+        EXPAND: 'expand',
+        COLLAPSE: 'collapse'
     }
     let defaultOpts = {
         lazyLoad: false,
@@ -122,31 +130,37 @@
         $li.addClass('last-child').siblings().removeClass('last-child');
     }
     function expandNode($li, cb) {
-        if ($li.hasClass('expanded')) {
+        const callback = () => {
             cb && cb();
+            $elem.trigger(Events.EXPAND, [id, $li]);
+        }
+        if ($li.hasClass('expanded')) {
+            callback();
             return;
         }
+        const id = $li.data('id');
         $li.addClass('expanded');
         if (userOpts.lazyLoad === false) {
-            cb && cb();
+            callback();
             return;
         }
         let $subul = $li.children('ul');
         if ($subul.length === 0 || $subul.children('li').length === 0) {
             load({
-                id: $li.data('id')
-            }, cb);
+                id
+            }, callback);
         } else {
-            cb && cb();
+            callback();
         }
     }
     function collapseNode($li) {
         $li.removeClass('expanded');
+        $elem.trigger(Events.COLLAPSE, [$li.data('id'), $li]);
     }
     function bind() {
         //bind event
         $elem.on('click', 'span.expand-icon', function() {
-            expandNode($(this).closest('li'))
+            expandNode($(this).closest('li'));
         });
 
         $elem.on('click', 'span.collapse-icon', function() {
@@ -165,8 +179,7 @@
                         $self.text(userOpts.types[type].btn.activeName);
                         $li.addClass('active');
                         break;
-                    case SwitchAction.OFF:
-                        $self.text(userOpts.types[type].btn.defaultName);
+                    case SwitchAction.OFF: $self.text(userOpts.types[type].btn.defaultName);
                         $li.removeClass('active');
                         break;
                 }
@@ -190,13 +203,19 @@
         return {
             load,
             build,
-            expandNode: function(id, cb) {
+            expandNode(id, cb) {
                 const $li = $(`li[data-id=${id}]`, $elem);
                 expandNode($li, cb);
             },
-            collapseNode: function() {
+            collapseNode(id) {
                 const $li = $(`li[data-id=${id}]`, $elem);
                 collapseNode($li);
+            },
+            on(eventName, callback) {
+                $elem.on(eventName, callback);
+            },
+            off(eventName, callback) {
+                $elem.off(eventName, callback);
             }
         };
     }
